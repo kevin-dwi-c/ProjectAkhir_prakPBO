@@ -10,9 +10,7 @@ package view;
  */
 public class Pengembalian extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Pengembalian
-     */
+    
     public Pengembalian() {
         initComponents();
     }

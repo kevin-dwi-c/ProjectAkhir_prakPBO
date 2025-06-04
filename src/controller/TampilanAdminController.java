@@ -7,6 +7,7 @@ package controller;
 import java.util.List;
 import model.UserModel;
 import repository.UserRepository;
+import view.TambahMobil;
 import view.TampilanAdmin;
 
 public class TampilanAdminController {
@@ -69,4 +70,11 @@ public class TampilanAdminController {
             view.showError("User Gagal Ditambahkan");
         }
     }
+    
+     public void TambahkanMobil() {
+        view.getBtnTambahMobil().addActionListener(e -> {
+            view.dispose();
+            new TambahMobil().setVisible(true);
+        });
+    }       
 }

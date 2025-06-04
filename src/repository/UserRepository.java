@@ -35,7 +35,8 @@ public class UserRepository {
             statement.execute();
             var rs = statement.getResultSet();
             while(rs.next()){
-                result.add(new UserModel(rs.getInt("id"), 
+                result.add(new UserModel(
+                rs.getInt("id"), 
                 rs.getString("username"), 
                 rs.getString("password"), 
                 UserModel.Role.valueOf(rs.getString("role"))));

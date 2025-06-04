@@ -6,6 +6,7 @@ package view;
 
 import controller.TampilanAdminController;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.UserModel;
@@ -49,6 +50,10 @@ public class TampilanAdmin extends javax.swing.JFrame {
          }
      }
 
+    public JButton getBtnTambahMobil() {
+        return btnTambahMobil;
+    }
+     
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -64,6 +69,7 @@ public class TampilanAdmin extends javax.swing.JFrame {
         TambahP = new javax.swing.JButton();
         EditP = new javax.swing.JButton();
         DeleteP = new javax.swing.JButton();
+        btnTambahMobil = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dashboard Admin");
@@ -106,7 +112,7 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 8;
+        gridBagConstraints.gridheight = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weightx = 2.0;
@@ -150,7 +156,9 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         getContentPane().add(jLabel2, gridBagConstraints);
 
+        TambahP.setBackground(new java.awt.Color(51, 255, 0));
         TambahP.setText("Tambah");
+        TambahP.setMinimumSize(new java.awt.Dimension(72, 27));
         TambahP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 TambahPActionPerformed(evt);
@@ -163,7 +171,9 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(20, 10, 0, 20);
         getContentPane().add(TambahP, gridBagConstraints);
 
+        EditP.setBackground(new java.awt.Color(51, 204, 255));
         EditP.setText("Edit");
+        EditP.setMinimumSize(new java.awt.Dimension(72, 27));
         EditP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EditPActionPerformed(evt);
@@ -177,7 +187,9 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 20);
         getContentPane().add(EditP, gridBagConstraints);
 
+        DeleteP.setBackground(new java.awt.Color(255, 0, 51));
         DeleteP.setText("Delete");
+        DeleteP.setMinimumSize(new java.awt.Dimension(72, 27));
         DeleteP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DeletePActionPerformed(evt);
@@ -190,6 +202,27 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 20);
         getContentPane().add(DeleteP, gridBagConstraints);
+
+        btnTambahMobil.setBackground(new java.awt.Color(51, 102, 255));
+        btnTambahMobil.setText("Tambahkan Mobil");
+        btnTambahMobil.setMaximumSize(new java.awt.Dimension(72, 23));
+        btnTambahMobil.setMinimumSize(new java.awt.Dimension(75, 30));
+        btnTambahMobil.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTambahMobilMouseClicked(evt);
+            }
+        });
+        btnTambahMobil.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTambahMobilActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 20);
+        getContentPane().add(btnTambahMobil, gridBagConstraints);
 
         setSize(new java.awt.Dimension(547, 330));
         setLocationRelativeTo(null);
@@ -210,6 +243,14 @@ public class TampilanAdmin extends javax.swing.JFrame {
     private void dataPetugasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dataPetugasMouseClicked
         controller.updateSelected(dataPetugas.getSelectedRow());
     }//GEN-LAST:event_dataPetugasMouseClicked
+
+    private void btnTambahMobilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahMobilActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTambahMobilActionPerformed
+
+    private void btnTambahMobilMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTambahMobilMouseClicked
+        controller.TambahkanMobil();
+    }//GEN-LAST:event_btnTambahMobilMouseClicked
 
     /**
      * @param args the command line arguments
@@ -253,6 +294,7 @@ public class TampilanAdmin extends javax.swing.JFrame {
     private javax.swing.JTextField Pass;
     private javax.swing.JButton TambahP;
     private javax.swing.JTextField User;
+    private javax.swing.JButton btnTambahMobil;
     private javax.swing.JTable dataPetugas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

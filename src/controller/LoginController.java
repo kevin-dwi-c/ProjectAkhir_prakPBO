@@ -28,6 +28,8 @@ public class LoginController {
         }
         if(user.getRole() == UserModel.Role.admin){
             view.GotoAdmin();
+        } else if(user.getRole() == UserModel.Role.petugas){
+            view.GotoPetugas(); 
         }
     }
  

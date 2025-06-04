@@ -27,6 +27,11 @@ public class Login extends javax.swing.JFrame {
         new TampilanAdmin().setVisible(true);
         dispose();
     }
+    
+    public void GotoPetugas(){
+        new MainPage().setVisible(true);
+        dispose();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -40,8 +45,8 @@ public class Login extends javax.swing.JFrame {
         Username = new javax.swing.JLabel();
         Password = new javax.swing.JLabel();
         InputUser = new javax.swing.JTextField();
-        InputPassword = new javax.swing.JTextField();
         BtnLogin = new javax.swing.JButton();
+        InputPassword = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAlwaysOnTop(true);
@@ -57,13 +62,6 @@ public class Login extends javax.swing.JFrame {
         InputUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 InputUserActionPerformed(evt);
-            }
-        });
-
-        InputPassword.setAlignmentX(0.0F);
-        InputPassword.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InputPasswordActionPerformed(evt);
             }
         });
 
@@ -123,10 +121,6 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_InputUserActionPerformed
 
-    private void InputPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InputPasswordActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_InputPasswordActionPerformed
-
     private void BtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnLoginActionPerformed
         controller.login(InputUser.getText(), InputPassword.getText());
     }//GEN-LAST:event_BtnLoginActionPerformed
@@ -164,7 +158,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnLogin;
-    private javax.swing.JTextField InputPassword;
+    private javax.swing.JPasswordField InputPassword;
     private javax.swing.JTextField InputUser;
     private javax.swing.JLabel Password;
     private javax.swing.JLabel Username;

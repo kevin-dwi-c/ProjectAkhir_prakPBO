@@ -98,14 +98,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InputUserActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JTextField" name="InputPassword">
-      <Properties>
-        <Property name="alignmentX" type="float" value="0.0"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="InputPasswordActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="BtnLogin">
       <Properties>
         <Property name="text" type="java.lang.String" value="Login"/>
@@ -113,6 +105,8 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnLoginActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JPasswordField" name="InputPassword">
     </Component>
   </SubComponents>
 </Form>
