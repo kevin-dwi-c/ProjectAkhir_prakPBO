@@ -1,155 +1,93 @@
 package view;
 
-
+import controller.RentalController;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import model.MobilComboItem;
+import model.MobilModel;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-
 /**
  *
  * @author USER
  */
 public class Rental extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Rental
-     */
+    private RentalController controller;
+
     public Rental() {
         initComponents();
-        initDateComboBoxes();
+        TanggalSewa.setDateFormatString("yyy/MM/dd");
+        TanggalBalik.setDateFormatString("yyy/MM/dd");
+        controller = new RentalController(this);
+        controller.loadMobilToComboBox();
     }
-    
-    private void initDateComboBoxes() {
-    // Inisialisasi ComboBox Hari (1-31)
-    for (int i = 1; i <= 31; i++) {
-        HariSewa.addItem(String.valueOf(i));
-        HariBalik.addItem(String.valueOf(i));
+
+    public void setMobilComboBoxItems(List<MobilComboItem> listMobil) {
+        cCarID.removeAllItems();
+        for (MobilComboItem item : listMobil) {
+            cCarID.addItem(item); 
+        }
     }
-    
-    // Inisialisasi ComboBox Bulan
-    String[] months = {"Januari", "Februari", "Maret", "April", "Mei", "Juni", 
-                      "Juli", "Agustus", "September", "Oktober", "November", "Desember"};
-    for (String month : months) {
-        BulanSewa.addItem(month);
-        BulanBalik.addItem(month);
+
+    public String getCustID() {
+        return CustID.getText();
     }
-    
-    // Inisialisasi ComboBox Tahun (tahun sekarang sampai +5 tahun)
-    int currentYear = java.util.Calendar.getInstance().get(java.util.Calendar.YEAR);
-    for (int i = currentYear; i <= currentYear + 5; i++) {
-        TahunSewa.addItem(String.valueOf(i));
-        TahunBalik.addItem(String.valueOf(i));
+
+    public void setNamaCustomer(String nama) {
+        NamaCust.setText(nama);
     }
-    
-    // Set tanggal default ke hari ini
-    setCurrentDate();
-    
-    // Tambahkan listener untuk validasi tanggal
-    addDateComboBoxListeners();
-}
-    
-    private void setCurrentDate() {
-    java.util.Calendar cal = java.util.Calendar.getInstance();
-    
-    // Set tanggal sewa
-    HariSewa.setSelectedItem(String.valueOf(cal.get(java.util.Calendar.DATE)));
-    BulanSewa.setSelectedIndex(cal.get(java.util.Calendar.MONTH));
-    TahunSewa.setSelectedItem(String.valueOf(cal.get(java.util.Calendar.YEAR)));
-    
-    // Set tanggal kembali (default +1 hari)
-    cal.add(java.util.Calendar.DATE, 1);
-    HariBalik.setSelectedItem(String.valueOf(cal.get(java.util.Calendar.DATE)));
-    BulanBalik.setSelectedIndex(cal.get(java.util.Calendar.MONTH));
-    TahunBalik.setSelectedItem(String.valueOf(cal.get(java.util.Calendar.YEAR)));
-}
-    
-    private void addDateComboBoxListeners() {
-    // Listener untuk tanggal sewa
-    BulanSewa.addActionListener(e -> updateMaxDays(HariSewa, BulanSewa, TahunSewa));
-    TahunSewa.addActionListener(e -> updateMaxDays(HariSewa, BulanSewa, TahunSewa));
-    
-    // Listener untuk tanggal kembali
-    BulanBalik.addActionListener(e -> updateMaxDays(HariBalik, BulanBalik, TahunBalik));
-    TahunBalik.addActionListener(e -> updateMaxDays(HariBalik, BulanBalik, TahunBalik));
-}
-    
-    private void updateMaxDays(JComboBox<String> dayCombo, JComboBox<String> monthCombo, JComboBox<String> yearCombo) {
-    try {
-        // Pastikan ComboBox memiliki item yang dipilih
-        if (monthCombo.getSelectedItem() == null || yearCombo.getSelectedItem() == null) {
-            return;
-        }
 
-        int month = monthCombo.getSelectedIndex() + 1; // Januari=1, Februari=2, dst.
-        int year;
-        
-        try {
-            year = Integer.parseInt(yearCombo.getSelectedItem().toString());
-        } catch (NumberFormatException e) {
-            System.err.println("Error parsing year: " + e.getMessage());
-            return;
-        }
+    public void setDateAwal() {
+        LocalDate now = LocalDate.now();
+        Date dateNow = Date.from(now.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-        int maxDays;
-        if (month == 2) { // Februari
-            System.out.println("Checking February for year: " + year); // Debug log
-            boolean isLeapYear = ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-            System.out.println("Is leap year: " + isLeapYear); // Debug log
-            maxDays = isLeapYear ? 29 : 28;
-        } else if (month == 4 || month == 6 || month == 9 || month == 11) {
-            maxDays = 30;
-        } else {
-            maxDays = 31;
-        }
+        TanggalSewa.setDate(dateNow);
+        TanggalBalik.setDate(dateNow);
 
-        // Simpan hari yang dipilih sebelumnya
-        String selectedDay = (String) dayCombo.getSelectedItem();
-        int prevSelected = (selectedDay != null && !selectedDay.isEmpty()) ? 
-                          Integer.parseInt(selectedDay) : 1;
-
-        dayCombo.removeAllItems();
-        
-        // Isi ComboBox hari
-        for (int i = 1; i <= maxDays; i++) {
-            dayCombo.addItem(String.valueOf(i));
-        }
-
-        // Set hari yang dipilih sebelumnya jika masih valid
-        if (prevSelected >= 1 && prevSelected <= maxDays) {
-            dayCombo.setSelectedItem(String.valueOf(prevSelected));
-        } else {
-            dayCombo.setSelectedIndex(maxDays - 1); // Pilih hari terakhir
-        }
-        
-    } catch (Exception e) {
-        System.err.println("Error in updateMaxDays: " + e.getMessage());
-        e.printStackTrace();
     }
-}
-    
-    public java.util.Date getTanggalSewa() {
-    int day = Integer.parseInt(HariSewa.getSelectedItem().toString());
-    int month = BulanSewa.getSelectedIndex(); // Januari = 0
-    int year = Integer.parseInt(TahunSewa.getSelectedItem().toString());
-    
-    java.util.Calendar cal = java.util.Calendar.getInstance();
-    cal.set(year, month, day);
-    return cal.getTime();
-}
 
-public java.util.Date getTanggalKembali() {
-    int day = Integer.parseInt(HariBalik.getSelectedItem().toString());
-    int month = BulanBalik.getSelectedIndex(); // Januari = 0
-    int year = Integer.parseInt(TahunBalik.getSelectedItem().toString());
-    
-    java.util.Calendar cal = java.util.Calendar.getInstance();
-    cal.set(year, month, day);
-    return cal.getTime();
-}
-    
+    public JComboBox<MobilComboItem> getcCarID() {
+        return cCarID;
+    }
+
+    public void setBiayaRental(String biaya) {
+        biayaRental.setText(biaya);
+    }
+
+    public Date getTanggalSewa() {
+        return TanggalSewa.getDate();
+    }
+
+    public Date getTanggalBalik() {
+        return TanggalBalik.getDate();
+    }
+
+    public void showError(String pesan) {
+        JOptionPane.showMessageDialog(this, pesan);
+    }
+
+    public void showMessage(String pesan) {
+        JOptionPane.showMessageDialog(this, pesan);
+    }
+
+    public void resetForm() {
+        CustID.setText("");
+        cCarID.setSelectedIndex(0);
+        NamaCust.setText("");
+        TanggalSewa.setDate(null);
+        TanggalBalik.setDate(null);
+        biayaRental.setText("");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,34 +98,26 @@ public java.util.Date getTanggalKembali() {
         menuBar2 = new java.awt.MenuBar();
         menu3 = new java.awt.Menu();
         menu4 = new java.awt.Menu();
+        menuBar3 = new java.awt.MenuBar();
+        menu5 = new java.awt.Menu();
+        menu6 = new java.awt.Menu();
         jLabel1 = new javax.swing.JLabel();
-        Nama = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
+        biayaRental = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        cCarID = new javax.swing.JComboBox<>();
+        CustID = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        NIK = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        NoTelepon = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        email = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
+        NamaCust = new javax.swing.JTextField();
+        TanggalSewa = new com.toedter.calendar.JDateChooser();
+        jLabel16 = new javax.swing.JLabel();
+        TanggalBalik = new com.toedter.calendar.JDateChooser();
+        btnRental = new javax.swing.JButton();
         Clear = new javax.swing.JButton();
-        HariBalik = new javax.swing.JComboBox<>();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        HariSewa = new javax.swing.JComboBox<>();
-        PilihMobil = new javax.swing.JComboBox<>();
-        jLabel10 = new javax.swing.JLabel();
-        BulanSewa = new javax.swing.JComboBox<>();
-        jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
-        TahunSewa = new javax.swing.JComboBox<>();
-        BulanBalik = new javax.swing.JComboBox<>();
-        TahunBalik = new javax.swing.JComboBox<>();
-        jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
 
         menu1.setLabel("File");
         menuBar1.add(menu1);
@@ -201,246 +131,247 @@ public java.util.Date getTanggalKembali() {
         menu4.setLabel("Edit");
         menuBar2.add(menu4);
 
+        menu5.setLabel("File");
+        menuBar3.add(menu5);
+
+        menu6.setLabel("Edit");
+        menuBar3.add(menu6);
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jLabel1.setText("Form Rental");
 
-        jLabel2.setText("Nama");
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Rental"));
 
-        jLabel3.setText("NIK");
-
-        jLabel4.setText("No.Tlp");
-
-        NoTelepon.addActionListener(new java.awt.event.ActionListener() {
+        biayaRental.setMinimumSize(new java.awt.Dimension(0, 30));
+        biayaRental.setPreferredSize(new java.awt.Dimension(50, 30));
+        biayaRental.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                NoTeleponActionPerformed(evt);
+                biayaRentalActionPerformed(evt);
             }
         });
 
-        email.addActionListener(new java.awt.event.ActionListener() {
+        jLabel6.setText("Biaya Rental");
+
+        jLabel7.setText("Tanggal Sewa");
+
+        cCarID.setMinimumSize(new java.awt.Dimension(0, 30));
+        cCarID.setPreferredSize(new java.awt.Dimension(50, 30));
+        cCarID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                emailActionPerformed(evt);
+                cCarIDActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("Email");
+        CustID.setMinimumSize(new java.awt.Dimension(0, 30));
+        CustID.setPreferredSize(new java.awt.Dimension(50, 30));
+        CustID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CustIDActionPerformed(evt);
+            }
+        });
+        CustID.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                CustIDKeyPressed(evt);
+            }
+        });
 
-        Clear.setText("Clear All");
+        jLabel2.setText("Customer ID");
+
+        jLabel3.setText("Car ID");
+
+        jLabel4.setText("Nama Customer");
+
+        NamaCust.setMinimumSize(new java.awt.Dimension(0, 30));
+        NamaCust.setPreferredSize(new java.awt.Dimension(50, 30));
+        NamaCust.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NamaCustActionPerformed(evt);
+            }
+        });
+
+        TanggalSewa.setMinimumSize(new java.awt.Dimension(0, 30));
+        TanggalSewa.setPreferredSize(new java.awt.Dimension(50, 30));
+
+        jLabel16.setText("Tanggal Kembali");
+
+        TanggalBalik.setMinimumSize(new java.awt.Dimension(0, 30));
+        TanggalBalik.setPreferredSize(new java.awt.Dimension(50, 30));
+
+        btnRental.setBackground(new java.awt.Color(47, 129, 255));
+        btnRental.setText("Submit");
+        btnRental.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRentalMouseClicked(evt);
+            }
+        });
+
+        Clear.setBackground(new java.awt.Color(255, 0, 110));
+        Clear.setText("Cancel");
+        Clear.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                ClearMouseClicked(evt);
+            }
+        });
         Clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ClearActionPerformed(evt);
             }
         });
 
-        HariBalik.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        HariBalik.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HariBalikActionPerformed(evt);
-            }
-        });
-
-        jLabel7.setText("Pilih Mobil");
-
-        jLabel8.setText("Tgl.Sewa");
-
-        jLabel9.setText("Tgl.Balik");
-
-        HariSewa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        HariSewa.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                HariSewaActionPerformed(evt);
-            }
-        });
-
-        PilihMobil.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        PilihMobil.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PilihMobilActionPerformed(evt);
-            }
-        });
-
-        jLabel10.setText("Hari :");
-
-        BulanSewa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel11.setLabelFor(BulanSewa);
-        jLabel11.setText("Bulan :");
-
-        jLabel12.setText("Tahun :");
-
-        TahunSewa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        BulanBalik.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        TahunBalik.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel13.setText("Hari :");
-
-        jLabel14.setText("Bulan :");
-
-        jLabel15.setText("Tahun :");
-
-        jButton1.setText("Submit");
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(TanggalBalik, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TanggalSewa, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(biayaRental, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(NamaCust, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cCarID, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(CustID, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(55, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRental, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(Clear)
+                .addGap(91, 91, 91))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(CustID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cCarID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(NamaCust, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(biayaRental, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TanggalSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14)
+                .addComponent(jLabel16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(TanggalBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(26, 26, 26)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRental, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Clear, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(44, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(333, 333, 333)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(PilihMobil, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(Nama, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(NIK, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(NoTelepon, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(89, 89, 89)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(HariSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(jLabel8))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(HariBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(BulanSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(BulanBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(TahunSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addGap(59, 59, 59))
-                                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                                        .addGap(0, 0, Short.MAX_VALUE)
-                                                        .addComponent(jButton1)
-                                                        .addGap(40, 40, 40)))
-                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addGroup(layout.createSequentialGroup()
-                                                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                        .addComponent(TahunBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                    .addComponent(Clear)))))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))))))
+                        .addGap(30, 30, 30)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(314, 314, 314)
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(59, 59, 59))
+                        .addGap(191, 191, 191)
+                        .addComponent(jLabel1)))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(51, 51, 51)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
-                .addGap(27, 27, 27)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(Nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(HariBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10)
-                    .addComponent(HariSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel13))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NIK, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(BulanSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11)
-                    .addComponent(BulanBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(NoTelepon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12)
-                    .addComponent(TahunSewa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TahunBalik, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(56, 56, 56)
-                        .addComponent(jLabel5)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel7)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(PilihMobil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(Clear)
-                            .addComponent(jButton1))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel6)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(76, Short.MAX_VALUE))))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jLabel5)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void NoTeleponActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoTeleponActionPerformed
+    private void NamaCustActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NamaCustActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_NoTeleponActionPerformed
+    }//GEN-LAST:event_NamaCustActionPerformed
 
-    private void emailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_emailActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_emailActionPerformed
+    private void biayaRentalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_biayaRentalActionPerformed
 
-    private void PilihMobilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PilihMobilActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_PilihMobilActionPerformed
+    }//GEN-LAST:event_biayaRentalActionPerformed
+
+    private void cCarIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cCarIDActionPerformed
+        controller.loadHargaDanHitungTotal();
+    }//GEN-LAST:event_cCarIDActionPerformed
 
     private void ClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ClearActionPerformed
-        Nama.setText("");
-        NIK.setText("");
-        NoTelepon.setText("");
-        email.setText("");
-        PilihMobil.setSelectedIndex(0);
-        setCurrentDate(); // Reset tanggal ke default
+
     }//GEN-LAST:event_ClearActionPerformed
 
-    private void HariSewaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HariSewaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_HariSewaActionPerformed
+    private void CustIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CustIDActionPerformed
+        controller.loadCustomerName();
+    }//GEN-LAST:event_CustIDActionPerformed
 
-    private void HariBalikActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HariBalikActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_HariBalikActionPerformed
+    private void CustIDKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_CustIDKeyPressed
+
+    }//GEN-LAST:event_CustIDKeyPressed
+
+    private void btnRentalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRentalMouseClicked
+        try {
+            MobilComboItem selectedMobil = (MobilComboItem) cCarID.getSelectedItem();
+            int mobilId = selectedMobil.getId();
+            int Biaya = Integer.parseInt(biayaRental.getText());
+            int custId = Integer.parseInt(CustID.getText());
+
+            Date tglSewa = TanggalSewa.getDate();
+            Date tglBalik = TanggalBalik.getDate();
+
+            if (tglSewa == null || tglBalik == null) {
+                JOptionPane.showMessageDialog(null, "Tanggal sewa dan tanggal balik harus diisi!");
+                return;
+            }
+            controller.add(
+                    mobilId,
+                    custId,
+                    tglSewa,
+                    tglBalik,
+                    Biaya
+            );
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Harga sewa dan ID harus berupa angka!");
+        }
+
+    }//GEN-LAST:event_btnRentalMouseClicked
+
+    private void ClearMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ClearMouseClicked
+        dispose();
+        new MainPage().setVisible(true);
+    }//GEN-LAST:event_ClearMouseClicked
 
     /**
      * @param args the command line arguments
@@ -478,39 +409,31 @@ public java.util.Date getTanggalKembali() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> BulanBalik;
-    private javax.swing.JComboBox<String> BulanSewa;
     private javax.swing.JButton Clear;
-    private javax.swing.JComboBox<String> HariBalik;
-    private javax.swing.JComboBox<String> HariSewa;
-    private javax.swing.JTextField NIK;
-    private javax.swing.JTextField Nama;
-    private javax.swing.JTextField NoTelepon;
-    private javax.swing.JComboBox<String> PilihMobil;
-    private javax.swing.JComboBox<String> TahunBalik;
-    private javax.swing.JComboBox<String> TahunSewa;
-    private javax.swing.JTextField email;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField CustID;
+    private javax.swing.JTextField NamaCust;
+    private com.toedter.calendar.JDateChooser TanggalBalik;
+    private com.toedter.calendar.JDateChooser TanggalSewa;
+    private javax.swing.JTextField biayaRental;
+    private javax.swing.JButton btnRental;
+    private javax.swing.JComboBox<MobilComboItem> cCarID;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private java.awt.Menu menu1;
     private java.awt.Menu menu2;
     private java.awt.Menu menu3;
     private java.awt.Menu menu4;
+    private java.awt.Menu menu5;
+    private java.awt.Menu menu6;
     private java.awt.MenuBar menuBar1;
     private java.awt.MenuBar menuBar2;
+    private java.awt.MenuBar menuBar3;
     // End of variables declaration//GEN-END:variables
 }

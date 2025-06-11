@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.DBConnection;
+import model.MainpageModel;
 import model.MobilModel;
 
 /**
@@ -16,19 +17,18 @@ import model.MobilModel;
  */
 public class MainPageRepository {
     
-     public List<MobilModel> getAllMobil(){
+     public List<MainpageModel> getAllMobil(){
          var conn = DBConnection.getConnection();
-         var result = new ArrayList<MobilModel>();
-         try(var statement = conn.prepareStatement("SELECT * FROM mobil");){
+         var result = new ArrayList<MainpageModel>();
+         try(var statement = conn.prepareStatement("select rental.*, customer.*, mobil.* from rental JOIN customer ON rental.id_customer = customer.id JOIN mobil ON rental.id_mobil = mobil.id");){
             statement.execute();
             var rs = statement.getResultSet();
             while(rs.next()){
-                result.add(new MobilModel(rs.getInt("id"), 
-                rs.getString("merk"), 
-                rs.getString("tipe"),
-                rs.getInt("harga_sewa"),
-                rs.getBoolean("ketersediaan"),  
-                rs.getString("no_polisi")));
+                result.add(new MainpageModel(rs.getInt("rental.id"), 
+                rs.getString("mobil.tipe"), 
+                rs.getString("customer.nama"),
+                rs.getDate("rental.tanggal_sewa"),
+                rs.getDate("rental.tanggal_kembali")));
             }
          }catch(SQLException e){
                e.printStackTrace();

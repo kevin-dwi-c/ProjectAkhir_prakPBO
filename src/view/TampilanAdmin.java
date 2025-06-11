@@ -70,6 +70,7 @@ public class TampilanAdmin extends javax.swing.JFrame {
         EditP = new javax.swing.JButton();
         DeleteP = new javax.swing.JButton();
         btnTambahMobil = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Dashboard Admin");
@@ -119,11 +120,11 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         getContentPane().add(jScrollPane1, gridBagConstraints);
 
-        User.setMinimumSize(new java.awt.Dimension(60, 22));
+        User.setMinimumSize(new java.awt.Dimension(60, 30));
         User.setName(""); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.ipadx = 20;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -131,32 +132,36 @@ public class TampilanAdmin extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 20);
         getContentPane().add(User, gridBagConstraints);
 
-        Pass.setMinimumSize(new java.awt.Dimension(60, 22));
+        Pass.setMinimumSize(new java.awt.Dimension(60, 30));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(5, 10, 0, 20);
         getContentPane().add(Pass, gridBagConstraints);
 
+        jLabel1.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel1.setText("Username");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 10, 0, 0);
         getContentPane().add(jLabel1, gridBagConstraints);
 
+        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 14)); // NOI18N
         jLabel2.setText("Password");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         getContentPane().add(jLabel2, gridBagConstraints);
 
-        TambahP.setBackground(new java.awt.Color(51, 255, 0));
+        TambahP.setBackground(new java.awt.Color(51, 211, 19));
+        TambahP.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         TambahP.setText("Tambah");
         TambahP.setMinimumSize(new java.awt.Dimension(72, 27));
         TambahP.addActionListener(new java.awt.event.ActionListener() {
@@ -165,13 +170,14 @@ public class TampilanAdmin extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(20, 10, 0, 20);
         getContentPane().add(TambahP, gridBagConstraints);
 
-        EditP.setBackground(new java.awt.Color(51, 204, 255));
+        EditP.setBackground(new java.awt.Color(51, 221, 211));
+        EditP.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         EditP.setText("Edit");
         EditP.setMinimumSize(new java.awt.Dimension(72, 27));
         EditP.addActionListener(new java.awt.event.ActionListener() {
@@ -181,14 +187,16 @@ public class TampilanAdmin extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 20);
         getContentPane().add(EditP, gridBagConstraints);
 
-        DeleteP.setBackground(new java.awt.Color(255, 0, 51));
+        DeleteP.setBackground(new java.awt.Color(255, 5, 79));
+        DeleteP.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         DeleteP.setText("Delete");
+        DeleteP.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         DeleteP.setMinimumSize(new java.awt.Dimension(72, 27));
         DeleteP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -197,13 +205,14 @@ public class TampilanAdmin extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 20);
         getContentPane().add(DeleteP, gridBagConstraints);
 
         btnTambahMobil.setBackground(new java.awt.Color(51, 102, 255));
+        btnTambahMobil.setFont(new java.awt.Font("SansSerif", 1, 14)); // NOI18N
         btnTambahMobil.setText("Tambahkan Mobil");
         btnTambahMobil.setMaximumSize(new java.awt.Dimension(72, 23));
         btnTambahMobil.setMinimumSize(new java.awt.Dimension(75, 30));
@@ -219,12 +228,19 @@ public class TampilanAdmin extends javax.swing.JFrame {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 8;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(30, 10, 0, 20);
         getContentPane().add(btnTambahMobil, gridBagConstraints);
 
-        setSize(new java.awt.Dimension(547, 330));
+        jLabel3.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
+        jLabel3.setText("Tambahkan Petugas");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        getContentPane().add(jLabel3, gridBagConstraints);
+
+        setSize(new java.awt.Dimension(624, 388));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -298,6 +314,7 @@ public class TampilanAdmin extends javax.swing.JFrame {
     private javax.swing.JTable dataPetugas;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

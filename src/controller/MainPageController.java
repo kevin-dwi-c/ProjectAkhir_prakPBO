@@ -5,6 +5,7 @@
 package controller;
 
 import java.util.List;
+import model.MainpageModel;
 import model.MobilModel;
 import repository.MainPageRepository;
 import view.Login;
@@ -16,7 +17,7 @@ public class MainPageController {
 
     private MainPage view;
     private MainPageRepository mobilRepo = new MainPageRepository();
-    private List<MobilModel> data;
+    private List<MainpageModel> data;
 
     public MainPageController(MainPage view) {
         this.view = view;
