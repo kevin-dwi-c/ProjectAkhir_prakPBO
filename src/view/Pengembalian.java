@@ -103,7 +103,7 @@ public class Pengembalian extends javax.swing.JFrame {
 
         jLabel4.setText("ID mobil");
 
-        jLabel8.setText("Jumlah Telat Pengembalian (Hari)");
+        jLabel8.setText("Jumlah Denda");
 
         JumlahTelat.setPreferredSize(new java.awt.Dimension(64, 30));
 
@@ -135,8 +135,6 @@ public class Pengembalian extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(TotalHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JumlahTelat, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(TanggalKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addContainerGap()
@@ -150,12 +148,15 @@ public class Pengembalian extends javax.swing.JFrame {
                                         .addGap(131, 131, 131))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel8)
                                             .addComponent(jLabel2)
                                             .addComponent(jLabel4)
                                             .addComponent(jLabel5))
-                                        .addGap(18, 18, 18)))
-                                .addComponent(NamaPeminjam, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                        .addGap(75, 75, 75)))
+                                .addComponent(NamaPeminjam, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(TanggalKembali, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jLabel8)
+                        .addComponent(JumlahTelat, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(

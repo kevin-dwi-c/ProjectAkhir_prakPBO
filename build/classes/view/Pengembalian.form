@@ -108,8 +108,6 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="1" attributes="0">
                       <Component id="TotalHarga" alignment="1" min="-2" pref="231" max="-2" attributes="0"/>
-                      <Component id="JumlahTelat" alignment="1" min="-2" pref="231" max="-2" attributes="0"/>
-                      <Component id="TanggalKembali" alignment="1" min="-2" pref="231" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
@@ -125,17 +123,21 @@
                                       </Group>
                                       <Group type="102" alignment="1" attributes="0">
                                           <Group type="103" groupAlignment="0" attributes="0">
-                                              <Component id="jLabel8" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                                               <Component id="jLabel5" alignment="0" min="-2" max="-2" attributes="0"/>
                                           </Group>
-                                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <Component id="NamaPeminjam" min="-2" pref="231" max="-2" attributes="0"/>
                               </Group>
                           </Group>
+                      </Group>
+                      <Component id="TanggalKembali" alignment="1" min="-2" pref="231" max="-2" attributes="0"/>
+                      <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                          <Component id="jLabel8" min="-2" max="-2" attributes="0"/>
+                          <Component id="JumlahTelat" min="-2" pref="231" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace pref="40" max="32767" attributes="0"/>
@@ -190,7 +192,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Jumlah Telat Pengembalian (Hari)"/>
+            <Property name="text" type="java.lang.String" value="Jumlah Denda"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="JumlahTelat">

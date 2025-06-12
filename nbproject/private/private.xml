@@ -6,7 +6,9 @@
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/repository/RentalRepository.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/view/MainPage.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/model/CustomerModel.java</file>
+            <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/view/TampilanAdmin.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/model/PengembalianModel.java</file>
+            <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/view/Customer.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/model/MobilModel.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/controller/TambahMobilController.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/repository/CustomerRepository.java</file>
@@ -19,6 +21,7 @@
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/model/RentalModel.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/view/Pengembalian.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/controller/PengembalianController.java</file>
+            <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/view/Login.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/repository/PengembalianRepository.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/repository/MobilRepository.java</file>
             <file>file:/C:/Users/Asus/Documents/Praktikum%20PBO/ProjectAkhirPBO/src/model/MobilComboItem.java</file>
